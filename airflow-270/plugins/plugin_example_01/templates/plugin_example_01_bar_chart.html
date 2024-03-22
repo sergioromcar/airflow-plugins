@@ -1,0 +1,41 @@
+{% extends base_template %}
+  {% block page_title %}Cluster Activity - {{ appbuilder.app_name }}{% endblock %}
+  {% from 'appbuilder/loading_dots.html' import loading_dots %}
+  
+  {% block head_meta %}
+    {{ super() }}
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('plugin_example_01.static', filename='css/styles.css') }}">
+  {% endblock %}
+  
+  {% block content %}
+    {{ super() }}
+    <a href="javascript:history.back()" class="btn btn-primary">Volver</a>
+    <div id="value"></div>
+    <div id="bar_chart"></div>
+    <script>
+        // Fetch data from the endpoint
+        fetch('/echarts/plugin_example_01_bar_chart?id={{ id }}').then(response => response.json()).then(data => document.getElementById('value').innerHTML=data.values);
+        fetch('/echarts/plugin_example_01_bar_chart?id={{ id }}')
+            .then(response => response.json())
+            .then(data => {
+                // Create chart
+                var myChart = echarts.init(document.getElementById('bar_chart'));
+                var option = {
+                    xAxis: {
+                        type: 'category',
+                        data: data.categories
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: data.values,
+                        type: 'bar'
+                    }]
+                };
+                // Set chart options
+                myChart.setOption(option);
+            });
+    </script>
+  {% endblock %}  

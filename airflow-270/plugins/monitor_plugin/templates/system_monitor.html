@@ -1,0 +1,12 @@
+{% extends base_template %}
+  
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+    {{ super() }}
+    <h1>System Monitor</h1>
+    <p>CPU Usage: {{ cpu_usage }}%</p>
+    <p>Memory Usage: {{ memory_usage }}%</p>
+{% endblock %}
